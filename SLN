@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SLN – The Love Story of Sean & Naomi</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff0f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #ffb6c1;
+      padding: 30px 10px;
+    }
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      color: white;
+    }
+    header p {
+      font-size: 1.2em;
+      color: white;
+    }
+    nav {
+      background: #ffe4e1;
+      padding: 15px;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #d6336c;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    nav a:hover {
+      color: #a61e4d;
+    }
+    .container {
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      text-align: left;
+    }
+    label, input, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    input, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #ff7f9c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e66782;
+    }
+    footer {
+      background: #ffe4e1;
+      padding: 20px;
+      margin-top: 30px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SLN</h1>
+    <p>The Love Story of Sean & Naomi</p>
+  </header>
+
+  <nav>
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('story')">Their Story</a>
+    <a href="#" onclick="showPage('gallery')">Gallery</a>
+    <a href="#" onclick="showPage('letters')">Letters</a>
+    <a href="#" onclick="showPage('contact')">Contact</a>
+  </nav>
+
+  <div class="container" id="content">
+    <!-- Content will appear here -->
+  </div>
+
+  <footer>
+    © 2025 SLN | A story written in the stars
+  </footer>
+
+  <script>
+    const pages = {
+      home: `
+        <h2>Welcome to SLN</h2>
+        <p>Welcome to the love story of Sean & Naomi. A tale written not just in words, but in every shared look, every warm laugh, and every heartbeat that brought them closer together. 💖</p>
+      `,
+      story: `
+  <h2>How It All Began</h2>
+  <p>Sean met Naomi on a crisp autumn evening, under a sky painted with the soft hues of sunset. It was an ordinary day turned extraordinary by a simple smile that sparked something neither of them could explain. From that moment on, their lives intertwined like the delicate threads of a tapestry, weaving a story rich with laughter, tears, and unbreakable bonds.</p>
+
+  <p>Their first date was a quiet walk through the park, leaves crunching beneath their feet, as they shared stories and dreams. Every glance exchanged was a promise of something more—something lasting. With each passing day, Sean discovered in Naomi a partner who challenged him, inspired him, and loved him with a depth that felt like home.</p>
+
+  <p>Naomi, too, found in Sean a safe harbor from life’s storms. His kindness, humor, and unwavering support became her anchor, guiding her through moments of doubt and joy alike. Together, they built a world where honesty flourished, and vulnerability was met with open arms.</p>
+
+  <p>Years passed, marked by adventures near and far—from quiet evenings curled up with books, to spontaneous trips under starlit skies. Every memory they created was a testament to a love that refused to fade, a love that grew stronger with every challenge faced side by side.</p>
+
+  <p>Through every joy and hardship, their hearts beat in harmony. Their story is one of soul-deep connection, a dance of two spirits destined to journey through life as one. And as they continue writing their tale, the future holds infinite possibilities—each chapter more beautiful than the last.</p>
+`,
+      gallery: `
+        <h2>Moments Captured</h2>
+        <div class="gallery">
+          <img src="https://via.placeholder.com/300x200?text=First+Date" alt="First Date">
+          <img src="https://via.placeholder.com/300x200?text=Laughing+Together" alt="Laughing Together">
+          <img src="https://via.placeholder.com/300x200?text=Paris+Trip" alt="Paris Trip">
+          <img src="https://via.placeholder.com/300x200?text=Beach+Sunset" alt="Beach Sunset">
+        </div>
+      `,
+      letters: `
+        <h2>Letters of the Heart</h2>
+        <p><strong>Naomi to Sean:</strong><br>
+        “In you, I found not just love, but peace. When the world fades, your arms are my forever.”</p>
+        <p><strong>Sean to Naomi:</strong><br>
+        “Every second without you feels like a pause in my heartbeat. You are my every breath, my every moment.”</p>
+      `,
+      contact: `
+        <h2>Contact Us</h2>
+        <form>
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required>
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      `
+    };
+
+    function showPage(page) {
+      document.getElementById("content").innerHTML = pages[page];
+    }
+
+    // Show home page by default
+    showPage('home');
+  </script>
+
+</body>
+</html>
