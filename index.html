@@ -134,60 +134,28 @@
 
 <script>
   // Pages content (example placeholders)
-    const pages = {
-      home: `
-        <h2>Welcome to SLN</h2>
-        <p>Boboler says hi</p>
-      `,
-      story: `
-        <h2>How It All Began</h2>
-        <p>bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah</p>
-      `,
-      gallery: `
-        <h2>Moments Captured</h2>
-        <div class="gallery" role="list">
-          <img src="https://lh3.googleusercontent.com/a-/ALV-UjV7UYfjfZNY8MKU8r8i4pFGyhpfpKVAA3eVkWVEO_E0GIfLa7Sj=s128-p-k-rw-no" alt="Naomi's Teddy Bear" tabindex="0" role="listitem">
-          <img src="file:///var/folders/c3/2pk06vgs2r50fdrjhmbyhtjr0000gn/T/TemporaryItems/NSIRD_screencaptureui_M9ngss/%E6%88%AA%E5%9C%96%202025-06-18%20%E4%B8%8A%E5%8D%889.57.15.png" alt="Walking together" tabindex="0" role="listitem">
-          <img src="https://via.placeholder.com/300x200?text=Paris+Trip" alt="Paris Trip" tabindex="0" role="listitem">
-          <img src="https://via.placeholder.com/300x200?text=Beach+Sunset" alt="Beach Sunset" tabindex="0" role="listitem">
-        </div>
-      `,
-      timeline: `
-        <h2>Timeline</h2>
-        <p>2025/1/__ – Labubu met</p>
-        <p>2025/2/__ – 告白</p>
-        <p>2025/5/30 – 一起走被boboler+dean拍</p>
-        <p>2025/6/3 – Naomi becomes the priest's wife in Bobolism</p>
-        <p>2025/6/4 – Sean Liao becomes king</p>
-        <p>2025/6/4 – Naomi becomes queen</p>
-        <p>2025/6/15 – Sean 14th Birthday – 開放水域</p>
-        <p>2025/9/17 – Naomi 15th Birthday</p>
-        <p>2027/6/15 – Sean 16th Birthday – (Hint: chapter 28)</p>
-        <p>2028/6/15 – Sean 17th Birthday – 訂婚</p>
-        <p>2029/6/15 – Sean 18th Birthday – 結婚</p>
-        <p>2029/6/16 – Naomi van den Heuvel → Naomi Liao</p>
-        <p>2031/6/15 – Sean 20th Birthday – make babies</p>
-        <p>2032/4/15 – Children born (___ Liao)</p>
-        <p>2032/6/15 – Sean 21st Birthday</p>
-        <p>2033/6/15 – Sean 22nd Birthday – graduate from college</p>
-        <p>2034/6/15 – Sean 23rd Birthday – another make baby thing</p>
-        <p>2035/6/15 – Sean 24th Birthday – another baby born (___ Liao)</p>
-      `,
-      contact: `
-        <h2>Contact Us</h2>
-        <form id="contact-form" novalidate>
-          <label for="name">Your name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
-          <label for="email">Your email</label>
-          <input type="email" id="email" name="email" placeholder="Your email" required>
-          <label for="message">Your message</label>
-          <textarea id="message" name="message" placeholder="Your message..." rows="6" required></textarea>
-          <button type="submit">Send Message</button>
-        </form>
-      `
-    };
-
-
+  const pages = {
+    home: `<section id="home"><h1>Welcome to Sean & Naomi's Story</h1><p>Home page content here...</p></section>`,
+    story: `<section id="story"><h1>Their Story</h1><p>This is how they met...</p></section>`,
+    gallery: `<section id="gallery" class="gallery" tabindex="0">
+                <h1>Gallery</h1>
+                <img src="https://placekitten.com/200/200" alt="Cute kitten 1" tabindex="0">
+                <img src="https://placekitten.com/201/200" alt="Cute kitten 2" tabindex="0">
+                <img src="https://placekitten.com/202/200" alt="Cute kitten 3" tabindex="0">
+              </section>`,
+    contact: `<section id="contact"><h1>Contact Us</h1>
+                <form id="contact-form" novalidate>
+                  <label for="name">Name:</label><br />
+                  <input id="name" name="name" type="text" required minlength="2"><br />
+                  <label for="email">Email:</label><br />
+                  <input id="email" name="email" type="email" required><br />
+                  <label for="message">Message:</label><br />
+                  <textarea id="message" name="message" rows="4" required minlength="5"></textarea><br />
+                  <button type="submit">Send Message</button>
+                </form>
+              </section>`,
+    timeline: `<section id="timeline"><h1>Timeline</h1><p>Important dates and events...</p></section>`
+  };
 
   // Elements
   const content = document.getElementById('content');
