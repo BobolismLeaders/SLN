@@ -327,6 +327,7 @@
         </form>
       `
     };
+    
 
     const content = document.getElementById('content');
     let currentPage = '';
@@ -519,6 +520,56 @@
     // Load home page on start
     navigate('home');
   </script>
+<!-- Chatbot Interface -->
+<div style="position:fixed; bottom:20px; right:20px; width:300px; background:white; border:1px solid #ccc; padding:10px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); z-index:999;">
+  <h3>SLN Bot 💬</h3>
+  <div id="messages" style="height:200px; overflow-y:auto; background:#f9f9f9; padding:10px; border-radius:6px; border:1px solid #eee;"></div>
+  <input id="userInput" type="text" placeholder="Ask me anything..." style="width:100%; padding:8px; margin-top:8px; box-sizing:border-box;" onkeydown="if(event.key==='Enter') sendMessage()">
+</div>
+<script>
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (!message) return;
+
+  const messages = document.getElementById("messages");
+  messages.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+
+  const msg = message.toLowerCase();
+  let reply = "I'm just a simple bot. Ask me anything about Sean & Naomi 💞";
+
+  if (msg.includes("hello") || msg.includes("hi")) {
+    reply = "Hi there! ❤️ How can I help you?";
+  } else if (msg.includes("gallery") || msg.includes("photos") || msg.includes("pictures")) {
+    reply = "Sure! Here’s the gallery 📸";
+    showPage('gallery');
+  } else if (msg.includes("story") || msg.includes("how they met") || msg.includes("begin")) {
+    reply = "Let me take you to their beautiful story 🌸";
+    showPage('story');
+  } else if (msg.includes("contact") || msg.includes("message") || msg.includes("email")) {
+    reply = "Want to leave us a message? Here's the contact page ✉️";
+    showPage('contact');
+  } else if (msg.includes("timeline") || msg.includes("events") || msg.includes("dates")) {
+    reply = "Here's the timeline of Sean & Naomi's love story 🕒";
+    showPage('timeline');
+  } else if (msg.includes("home") || msg.includes("welcome") || msg.includes("main page")) {
+    reply = "Back to the homepage 🏠";
+    showPage('home');
+  }
+
+  messages.innerHTML += `<p><strong>SLN Bot:</strong> ${reply}</p>`;
+  input.value = "";
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+<script>
+function showPage(pageId) {
+  const sections = document.querySelectorAll("section");
+  sections.forEach(section => {
+    section.style.display = section.id === pageId ? "block" : "none";
+  });
+}
+</script>
 
 </body>
 </html>
