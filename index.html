@@ -4,8 +4,93 @@
   <meta charset="UTF-8">
   <title>SLN – The Love Story of Sean & Naomi</title>
   <style>
-    /* [same styles as before – skipped for space] */
-    /* keep all your current styles here */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff0f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #ffb6c1;
+      padding: 30px 10px;
+    }
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      color: white;
+    }
+    header p {
+      font-size: 1.2em;
+      color: white;
+    }
+    nav {
+      background: #ffe4e1;
+      padding: 15px;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #d6336c;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    nav a:hover {
+      color: #a61e4d;
+    }
+    .container {
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      text-align: left;
+    }
+    label, input, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    input, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #ff7f9c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e66782;
+    }
+    .success {
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
+    }
+    footer {
+      background: #ffe4e1;
+      padding: 20px;
+      margin-top: 30px;
+      color: #444;
+    }
   </style>
 </head>
 <body>
@@ -24,7 +109,7 @@
   </nav>
 
   <div class="container" id="content">
-    <!-- Content will appear here -->
+    <!-- Content will be loaded here -->
   </div>
 
   <footer>
@@ -39,25 +124,40 @@
       `,
       story: `
         <h2>How It All Began</h2>
-        <p>Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah
-
-</p>
+        <p>Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah</p>
       `,
       gallery: `
         <h2>Moments Captured</h2>
         <div class="gallery">
           <img src="https://lh3.googleusercontent.com/a-/ALV-UjV7UYfjfZNY8MKU8r8i4pFGyhpfpKVAA3eVkWVEO_E0GIfLa7Sj=s128-p-k-rw-no">
-          <img src="file:///var/folders/c3/2pk06vgs2r50fdrjhmbyhtjr0000gn/T/TemporaryItems/NSIRD_screencaptureui_M9ngss/%E6%88%AA%E5%9C%96%202025-06-18%20%E4%B8%8A%E5%8D%889.57.15.png">
+          <img src="https://via.placeholder.com/300x200?text=Laughing+Together">
           <img src="https://via.placeholder.com/300x200?text=Paris+Trip">
           <img src="https://via.placeholder.com/300x200?text=Beach+Sunset">
         </div>
       `,
       timeline: `
-        <h2>Their Timeline</h2>
-        <p>[Timeline events here...]</p>
+        <h2>Timeline</h2>
+        <p>2025/1/__ – Labubu met</p>
+        <p>2025/2/__ – 告白</p>
+        <p>2025/5/30 – 一起走被boboler+dean拍</p>
+        <p>2025/6/3 – Naomi becomes the priest's wife in Bobolism</p>
+        <p>2025/6/4 – Sean Liao becomes king</p>
+        <p>2025/6/4 – Naomi becomes queen</p>
+        <p>2025/6/15 – Sean 14th Birthday – 開放水域</p>
+        <p>2025/9/17 – Naomi 15th Birthday</p>
+        <p>2027/6/15 – Sean 16th Birthday – (Hint: chapter 28)</p>
+        <p>2028/6/15 – Sean 17th Birthday – 訂婚</p>
+        <p>2029/6/15 – Sean 18th Birthday – 結婚</p>
+        <p>2029/6/16 – Naomi van den Heuvel → Naomi Liao</p>
+        <p>2031/6/15 – Sean 20th Birthday – make babies</p>
+        <p>2032/4/15 – Children born (___ Liao)</p>
+        <p>2032/6/15 – Sean 21st Birthday</p>
+        <p>2033/6/15 – Sean 22nd Birthday – graduate from college</p>
+        <p>2034/6/15 – Sean 23rd Birthday – another make baby thing</p>
+        <p>2035/6/15 – Sean 24th Birthday – another baby born (___ Liao)</p>
       `,
       contact: `
-        <h2>Contact Sean & Naomi</h2>
+        <h2>Contact Us</h2>
         <form id="contact-form">
           <input type="text" name="name" placeholder="Your name" required>
           <input type="email" name="email" placeholder="Your email" required>
@@ -71,41 +171,40 @@
     function showPage(page) {
       document.getElementById("content").innerHTML = pages[page];
 
-      if (page === "contact") {
-        setTimeout(() => {
-          const form = document.getElementById("contact-form");
-          const successMessage = document.getElementById("success-message");
+      // Contact form JS only works when contact page is loaded
+      if (page === 'contact') {
+        const form = document.getElementById('contact-form');
+        const successMessage = document.getElementById('success-message');
 
-          form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const formData = new FormData(form);
 
-            fetch("https://formsubmit.co/ajax/j12345@kcis.com.tw", {
-              method: "POST",
-              body: formData,
-              headers: {
-                'Accept': 'application/json'
-              }
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success === "true" || data.success === true) {
-                form.reset();
-                successMessage.style.display = "block";
-              } else {
-                alert("Something went wrong. Please try again.");
-              }
-            })
-            .catch(error => {
-              console.error(error);
-              alert("There was an error sending your message.");
-            });
+          fetch("https://formsubmit.co/ajax/j12345@kcis.com.tw", {
+            method: "POST",
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success === "true" || data.success === true) {
+              form.reset();
+              successMessage.style.display = "block";
+            } else {
+              alert("Something went wrong. Please try again.");
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            alert("There was an error sending your message.");
           });
-        }, 50); // Wait a moment to ensure the form exists in DOM
+        });
       }
     }
 
-    // Show home page on load
+    // Show home page by default
     showPage('home');
   </script>
 
