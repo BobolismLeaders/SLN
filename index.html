@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>SLN – The Love Story of Sean & Naomi</title>
   <style>
     body {
@@ -35,14 +35,27 @@
       color: #d6336c;
       font-weight: bold;
       font-size: 1.1em;
+      outline: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      user-select: none;
     }
-    nav a:hover {
+    nav a:hover,
+    nav a:focus {
       color: #a61e4d;
+      outline: 2px solid #a61e4d;
+      outline-offset: 2px;
     }
     .container {
       padding: 30px;
       max-width: 800px;
       margin: auto;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      min-height: 300px;
+    }
+    .container.fade-out {
+      opacity: 0;
     }
     .gallery {
       display: grid;
@@ -53,6 +66,13 @@
       width: 100%;
       border-radius: 12px;
       box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .gallery img:hover,
+    .gallery img:focus {
+      transform: scale(1.05);
+      outline: 2px solid #a61e4d;
     }
     form {
       max-width: 400px;
@@ -63,11 +83,19 @@
       display: block;
       width: 100%;
       margin-bottom: 12px;
+      font-size: 1em;
     }
     input, textarea {
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus {
+      border-color: #a61e4d;
+      outline: none;
+      box-shadow: 0 0 5px #a61e4d;
     }
     button {
       background-color: #ff7f9c;
@@ -76,9 +104,13 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
     }
-    button:hover {
+    button:hover,
+    button:focus {
       background-color: #e66782;
+      outline: none;
     }
     .success {
       margin-top: 10px;
@@ -91,6 +123,111 @@
       margin-top: 30px;
       color: #444;
     }
+    /* Modal styles */
+    #modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    #modal .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      text-align: center;
+      font-size: 1.2em;
+    }
+    #modal button.close-modal {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff7f9c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    #modal button.close-modal:hover {
+      background-color: #e66782;
+    }
+
+    /* Chat widget */
+    #chat-widget {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 320px;
+      max-width: 90vw;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 10001;
+      font-size: 0.9em;
+    }
+    #chat-header {
+      background: #ff7f9c;
+      color: white;
+      padding: 10px 15px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+    #chat-messages {
+      height: 200px;
+      overflow-y: auto;
+      padding: 15px;
+      background: #fff0f5;
+      flex-grow: 1;
+    }
+    #chat-input {
+      border-top: 1px solid #ccc;
+      display: flex;
+    }
+    #chat-input textarea {
+      flex-grow: 1;
+      border: none;
+      padding: 10px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+    }
+    #chat-input button {
+      background: #ff7f9c;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #chat-input button:hover {
+      background: #e66782;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .chat-message.user {
+      text-align: right;
+      font-weight: bold;
+      color: #d6336c;
+    }
+    .chat-message.bot {
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -101,22 +238,43 @@
   </header>
 
   <nav>
-    <a href="#" onclick="showPage('home')">Home</a>
-    <a href="#" onclick="showPage('story')">Their Story</a>
-    <a href="#" onclick="showPage('gallery')">Gallery</a>
-    <a href="#" onclick="showPage('timeline')">Timeline</a>
-    <a href="#" onclick="showPage('contact')">Contact</a>
+    <a href="javascript:void(0)" onclick="navigate('home')" tabindex="0">Home</a>
+    <a href="javascript:void(0)" onclick="navigate('story')" tabindex="0">Their Story</a>
+    <a href="javascript:void(0)" onclick="navigate('gallery')" tabindex="0">Gallery</a>
+    <a href="javascript:void(0)" onclick="navigate('timeline')" tabindex="0">Timeline</a>
+    <a href="javascript:void(0)" onclick="navigate('contact')" tabindex="0">Contact</a>
   </nav>
 
-  <div class="container" id="content">
-    <!-- Content will be loaded here -->
+  <div class="container" id="content" aria-live="polite" aria-atomic="true">
+    <!-- Dynamic content here -->
   </div>
 
   <footer>
     © 2025 SLN | A story written in the stars
   </footer>
 
+  <!-- Modal for confirmation -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <button class="close-modal" aria-label="Close confirmation" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Simple Chat Widget -->
+  <div id="chat-widget" aria-label="Chat widget" role="region" aria-live="polite">
+    <div id="chat-header" tabindex="0" role="button" aria-expanded="true" aria-controls="chat-messages" onclick="toggleChat()">
+      Chat with us
+    </div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <textarea id="chat-textarea" rows="1" placeholder="Type your message..." aria-label="Type your message"></textarea>
+      <button onclick="sendChatMessage()" aria-label="Send chat message">Send</button>
+    </div>
+  </div>
+
   <script>
+    // Page content
     const pages = {
       home: `
         <h2>Welcome to SLN</h2>
@@ -124,15 +282,15 @@
       `,
       story: `
         <h2>How It All Began</h2>
-        <p>Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah Bismillah</p>
+        <p>Once upon a time, in the vibrant halls of school and quiet shared glances, Sean and Naomi's journey began. What started as classmates grew into deep friendship, and soon, something more. Their love blossomed through seasons of change, each moment deepening their bond. From playful teasing to heartfelt confessions, they built a story full of joy, learning, and growth. Through it all, they stood side by side, writing a story not just of romance — but of true companionship.</p>
       `,
       gallery: `
         <h2>Moments Captured</h2>
-        <div class="gallery">
-          <img src="https://lh3.googleusercontent.com/a-/ALV-UjV7UYfjfZNY8MKU8r8i4pFGyhpfpKVAA3eVkWVEO_E0GIfLa7Sj=s128-p-k-rw-no">
-          <img src="https://via.placeholder.com/300x200?text=Laughing+Together">
-          <img src="https://via.placeholder.com/300x200?text=Paris+Trip">
-          <img src="https://via.placeholder.com/300x200?text=Beach+Sunset">
+        <div class="gallery" role="list">
+          <img src="https://lh3.googleusercontent.com/a-/ALV-UjV7UYfjfZNY8MKU8r8i4pFGyhpfpKVAA3eVkWVEO_E0GIfLa7Sj=s128-p-k-rw-no" alt="Sean and Naomi smiling" tabindex="0" role="listitem">
+          <img src="https://via.placeholder.com/300x200?text=Laughing+Together" alt="Laughing Together" tabindex="0" role="listitem">
+          <img src="https://via.placeholder.com/300x200?text=Paris+Trip" alt="Paris Trip" tabindex="0" role="listitem">
+          <img src="https://via.placeholder.com/300x200?text=Beach+Sunset" alt="Beach Sunset" tabindex="0" role="listitem">
         </div>
       `,
       timeline: `
@@ -158,55 +316,98 @@
       `,
       contact: `
         <h2>Contact Us</h2>
-        <form id="contact-form">
-          <input type="text" name="name" placeholder="Your name" required>
-          <input type="email" name="email" placeholder="Your email" required>
-          <textarea name="message" placeholder="Your message..." rows="6" required></textarea>
+        <form id="contact-form" novalidate>
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+          <label for="email">Your email</label>
+          <input type="email" id="email" name="email" placeholder="Your email" required>
+          <label for="message">Your message</label>
+          <textarea id="message" name="message" placeholder="Your message..." rows="6" required></textarea>
           <button type="submit">Send Message</button>
-          <div class="success" id="success-message" style="display: none;">Message sent! 💖</div>
         </form>
       `
     };
 
-    function showPage(page) {
-      document.getElementById("content").innerHTML = pages[page];
+    const content = document.getElementById('content');
+    let currentPage = '';
 
-      // Contact form JS only works when contact page is loaded
-      if (page === 'contact') {
-        const form = document.getElementById('contact-form');
-        const successMessage = document.getElementById('success-message');
+    // Show page with fade animation
+    function navigate(page) {
+      if (page === currentPage) return;
+      content.classList.add('fade-out');
+      setTimeout(() => {
+        content.innerHTML = pages[page];
+        currentPage = page;
+        content.classList.remove('fade-out');
+        if (page === 'contact') setupContactForm();
+        if (page === 'gallery') setupGalleryLightbox();
+      }, 500);
+    }
 
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const formData = new FormData(form);
+    // Setup contact form submit with improved validation and FormSubmit.co fix
+    function setupContactForm() {
+      const form = document.getElementById('contact-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // Simple validation
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
 
-          fetch("https://formsubmit.co/ajax/j12345@kcis.com.tw", {
-            method: "POST",
+        // Show loading or disable submit button
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch('https://formsubmit.co/ajax/j12345@kcis.com.tw', {
+            method: 'POST',
             body: formData,
             headers: {
               'Accept': 'application/json'
             }
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success === "true" || data.success === true) {
-              form.reset();
-              successMessage.style.display = "block";
-            } else {
-              alert("Something went wrong. Please try again.");
-            }
-          })
-          .catch(error => {
-            console.error(error);
-            alert("There was an error sending your message.");
           });
-        });
-      }
+
+          const data = await response.json();
+          if (data.success) {
+            form.reset();
+            showModal('Message sent! 💖 Thank you for contacting us.');
+          } else {
+            showModal('Something went wrong. Please try again.');
+          }
+        } catch (error) {
+          showModal('There was an error sending your message. Please try again later.');
+          console.error(error);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }
+      });
     }
 
-    // Show home page by default
-    showPage('home');
-  </script>
+    // Modal functions
+    const modal = document.getElementById('modal');
+    const modalMessage = document.getElementById('modal-message');
 
-</body>
-</html>
+    function showModal(message) {
+      modalMessage.textContent = message;
+      modal.style.display = 'flex';
+      modal.focus();
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    // Close modal on ESC key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        closeModal();
+      }
+    });
+
+    // Gallery lightbox
+   
