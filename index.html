@@ -548,6 +548,17 @@ function sendMessage() {
     reply = "Wayne is Gay. 偉毛 草歪掉了";
     showPage('home');
   }
+function showPage(pageId) {
+  // Hide all pages
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => page.style.display = 'none');
+
+  // Show the selected page
+  const selectedPage = document.getElementById(pageId);
+  if (selectedPage) {
+    selectedPage.style.display = 'block';
+  }
+}
 
   messages.innerHTML += `<p><strong>SLN Bot:</strong> ${reply}</p>`;
   input.value = "";
