@@ -565,14 +565,6 @@ function showPage(pageId) {
   messages.scrollTop = messages.scrollHeight;
 }
 </script>
-<script>
-function showPage(pageId) {
-  const sections = document.querySelectorAll("section");
-  sections.forEach(section => {
-    section.style.display = section.id === pageId ? "block" : "none";
-  });
-}
-</script>
 
 </body>
 </html>
