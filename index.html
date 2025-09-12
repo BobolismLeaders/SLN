@@ -123,6 +123,7 @@
       margin-top: 30px;
       color: #444;
     }
+
     /* Modal styles */
     #modal {
       display: none;
@@ -213,7 +214,7 @@
       transition: background-color 0.3s ease;
     }
     #chat-input button:hover {
-      background: #e66782;
+      background-color: #e66782;
     }
     .chat-message {
       margin-bottom: 10px;
@@ -245,9 +246,7 @@
     <a href="javascript:void(0)" onclick="navigate('contact')" tabindex="0">Contact</a>
   </nav>
 
-  <div class="container" id="content" aria-live="polite" aria-atomic="true">
-    <!-- Dynamic content here -->
-  </div>
+  <div class="container" id="content" aria-live="polite" aria-atomic="true"></div>
 
   <footer>
     © 2025 SLN | A story written in the stars
@@ -261,48 +260,30 @@
     </div>
   </div>
 
+  <!-- Chat widget -->
+  <div id="chat-widget">
+    <div id="chat-header" aria-expanded="true" onclick="toggleChat()">SLN Bot 💬</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <textarea id="chat-textarea" rows="2" placeholder="Ask me anything..."></textarea>
+      <button onclick="sendChatMessage()">Send</button>
+    </div>
+  </div>
 
   <script>
     // Page content
     const pages = {
-      home: `
-        <h2>Welcome to SLN</h2>
-        <p>Boboler says hi</p>
-      `,
-      story: `
-        <h2>How It All Began</h2>
-        <p>bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah bismillah</p>
-      `,
+      home: `<h2>Welcome to SLN</h2><p>Boboler says hi</p>`,
+      story: `<h2>How It All Began</h2><p>Story goes here...</p>`,
       gallery: `
         <h2>Moments Captured</h2>
         <div class="gallery" role="list">
-          <img src="https://lh3.googleusercontent.com/a-/ALV-UjV7UYfjfZNY8MKU8r8i4pFGyhpfpKVAA3eVkWVEO_E0GIfLa7Sj=s128-p-k-rw-no" alt="Naomi's Teddy Bear" tabindex="0" role="listitem">
-          <img src="https://drive.google.com/uc?id=128_eEKrg17iW0ADTkNYUvu4nuijHXLsn">
+          <img src="https://via.placeholder.com/300x200?text=Naomi+Teddy" alt="Naomi's Teddy Bear" tabindex="0" role="listitem">
           <img src="https://via.placeholder.com/300x200?text=Paris+Trip" alt="Paris Trip" tabindex="0" role="listitem">
           <img src="https://via.placeholder.com/300x200?text=Beach+Sunset" alt="Beach Sunset" tabindex="0" role="listitem">
         </div>
       `,
-      timeline: `
-        <h2>Timeline</h2>
-        <p>2025/1/__ – Labubu met</p>
-        <p>2025/2/__ – 告白</p>
-        <p>2025/5/30 – 一起走被boboler+dean拍</p>
-        <p>2025/6/3 – Naomi becomes the priest's wife in Bobolism</p>
-        <p>2025/6/4 – Sean Liao becomes king</p>
-        <p>2025/6/4 – Naomi becomes queen</p>
-        <p>2025/6/15 – Sean 14th Birthday – 開放水域</p>
-        <p>2025/9/17 – Naomi 15th Birthday</p>
-        <p>2027/6/15 – Sean 16th Birthday – (Hint: chapter 28)</p>
-        <p>2028/6/15 – Sean 17th Birthday – 訂婚</p>
-        <p>2029/6/15 – Sean 18th Birthday – 結婚</p>
-        <p>2029/6/16 – Naomi van den Heuvel → Naomi Liao</p>
-        <p>2031/6/15 – Sean 20th Birthday – make babies</p>
-        <p>2032/4/15 – Children born (___ Liao)</p>
-        <p>2032/6/15 – Sean 21st Birthday</p>
-        <p>2033/6/15 – Sean 22nd Birthday – graduate from college</p>
-        <p>2034/6/15 – Sean 23rd Birthday – another make baby thing</p>
-        <p>2035/6/15 – Sean 24th Birthday – another baby born (___ Liao)</p>
-      `,
+      timeline: `<h2>Timeline</h2><p>Events go here...</p>`,
       contact: `
         <h2>Contact Us</h2>
         <form id="contact-form" novalidate>
@@ -316,12 +297,10 @@
         </form>
       `
     };
-    
 
     const content = document.getElementById('content');
     let currentPage = '';
 
-    // Show page with fade animation
     function navigate(page) {
       if (page === currentPage) return;
       content.classList.add('fade-out');
@@ -334,237 +313,109 @@
       }, 500);
     }
 
-    // Setup contact form submit with improved validation and FormSubmit.co fix
     function setupContactForm() {
       const form = document.getElementById('contact-form');
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', async e => {
         e.preventDefault();
-        // Simple validation
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
+        if (!form.checkValidity()) { form.reportValidity(); return; }
 
-        // Show loading or disable submit button
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
 
         const formData = new FormData(form);
-
         try {
           const response = await fetch('https://formsubmit.co/ajax/j12345@kcis.com.tw', {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Accept': 'application/json'
-            }
+            method: 'POST', body: formData, headers: {'Accept': 'application/json'}
           });
-
           const data = await response.json();
-          if (data.success) {
-            form.reset();
-            showModal('Message sent! 💖 Thank you for contacting us.');
-          } else {
-            showModal('Something went wrong. Please try again.');
-          }
-        } catch (error) {
-          showModal('There was an error sending your message. Please try again later.');
-          console.error(error);
+          showModal(data.success ? 'Message sent! 💖 Thank you!' : 'Something went wrong.');
+          if (data.success) form.reset();
+        } catch (err) {
+          showModal('Error sending message. Try again later.');
         } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
         }
       });
     }
 
-    // Modal functions
     const modal = document.getElementById('modal');
     const modalMessage = document.getElementById('modal-message');
+    function showModal(message) { modalMessage.textContent = message; modal.style.display='flex'; modal.focus(); }
+    function closeModal() { modal.style.display='none'; }
+    window.addEventListener('keydown', e => { if(e.key==='Escape' && modal.style.display==='flex') closeModal(); });
 
-    function showModal(message) {
-      modalMessage.textContent = message;
-      modal.style.display = 'flex';
-      modal.focus();
-    }
-
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    // Close modal on ESC key
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.style.display === 'flex') {
-        closeModal();
-      }
-    });
-
-    // Gallery lightbox
+    let lightbox = null;
     function setupGalleryLightbox() {
-      const imgs = document.querySelectorAll('.gallery img');
-      imgs.forEach(img => {
+      document.querySelectorAll('.gallery img').forEach(img => {
         img.addEventListener('click', () => openLightbox(img.src, img.alt));
-        img.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openLightbox(img.src, img.alt);
-          }
-        });
+        img.addEventListener('keypress', e => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); openLightbox(img.src,img.alt); } });
       });
     }
-
-    // Lightbox element
-    let lightbox = null;
-
     function openLightbox(src, alt) {
       if (!lightbox) {
         lightbox = document.createElement('div');
-        lightbox.style.position = 'fixed';
-        lightbox.style.top = 0;
-        lightbox.style.left = 0;
-        lightbox.style.width = '100vw';
-        lightbox.style.height = '100vh';
-        lightbox.style.backgroundColor = 'rgba(0,0,0,0.8)';
-        lightbox.style.display = 'flex';
-        lightbox.style.alignItems = 'center';
-        lightbox.style.justifyContent = 'center';
-        lightbox.style.zIndex = '100000';
-        lightbox.style.cursor = 'pointer';
+        lightbox.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:100000;cursor:pointer;';
         lightbox.tabIndex = 0;
-        lightbox.setAttribute('role', 'dialog');
-        lightbox.setAttribute('aria-modal', 'true');
-        lightbox.setAttribute('aria-label', 'Image preview');
-
+        lightbox.setAttribute('role','dialog'); lightbox.setAttribute('aria-modal','true'); lightbox.setAttribute('aria-label','Image preview');
         const img = document.createElement('img');
-        img.style.maxWidth = '90vw';
-        img.style.maxHeight = '90vh';
-        img.alt = alt || '';
+        img.style.maxWidth='90vw'; img.style.maxHeight='90vh';
         lightbox.appendChild(img);
-
-        lightbox.addEventListener('click', () => closeLightbox());
-        lightbox.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') closeLightbox();
-        });
-
+        lightbox.addEventListener('click',closeLightbox);
+        lightbox.addEventListener('keydown', e=>{if(e.key==='Escape') closeLightbox();});
         document.body.appendChild(lightbox);
       }
-
-      lightbox.firstChild.src = src;
-      lightbox.firstChild.alt = alt || '';
-      lightbox.style.display = 'flex';
-      lightbox.focus();
+      lightbox.firstChild.src=src; lightbox.firstChild.alt=alt||''; lightbox.style.display='flex'; lightbox.focus();
     }
-
-    function closeLightbox() {
-      if (lightbox) {
-        lightbox.style.display = 'none';
-      }
-    }
+    function closeLightbox(){ if(lightbox) lightbox.style.display='none'; }
 
     // Chat widget
-    const chatWidget = document.getElementById('chat-widget');
     const chatHeader = document.getElementById('chat-header');
     const chatMessages = document.getElementById('chat-messages');
     const chatTextarea = document.getElementById('chat-textarea');
-
     let chatOpen = true;
 
     function toggleChat() {
-      chatOpen = !chatOpen;
-      chatMessages.style.display = chatOpen ? 'block' : 'none';
-      document.getElementById('chat-input').style.display = chatOpen ? 'flex' : 'none';
+      chatOpen=!chatOpen;
+      document.getElementById('chat-input').style.display=chatOpen?'flex':'none';
+      chatMessages.style.display=chatOpen?'block':'none';
       chatHeader.setAttribute('aria-expanded', chatOpen.toString());
     }
 
-    function appendChatMessage(text, sender = 'bot') {
-      const div = document.createElement('div');
-      div.textContent = text;
-      div.classList.add('chat-message');
-      div.classList.add(sender);
+    function appendChatMessage(text,sender='bot') {
+      const div=document.createElement('div');
+      div.textContent=text;
+      div.classList.add('chat-message',sender);
       chatMessages.appendChild(div);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      chatMessages.scrollTop=chatMessages.scrollHeight;
     }
 
     function sendChatMessage() {
       const message = chatTextarea.value.trim();
-      if (!message) return;
-
-      appendChatMessage(message, 'user');
-      chatTextarea.value = '';
-
-      // Simple simulated bot reply
-      setTimeout(() => {
-        appendChatMessage('Thank you for your message! We will get back to you soon.');
-      }, 1000);
+      if(!message) return;
+      appendChatMessage(message,'user');
+      chatTextarea.value='';
+      setTimeout(()=>{ handleBotReply(message); },500);
     }
 
-    // Send chat on Enter (shift+enter for newline)
-    chatTextarea.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendChatMessage();
-      }
-    });
+    function handleBotReply(message){
+      const msg=message.toLowerCase();
+      let reply="I'm just a simple bot. Ask me anything about Sean & Naomi 💞";
+      if(msg.includes("hello")||msg.includes("hi")) reply="Hi there! ❤️ How can I help you?";
+      else if(msg.includes("gallery")||msg.includes("photos")||msg.includes("pictures")) { reply="Sure! Here’s the gallery 📸"; navigate('gallery'); }
+      else if(msg.includes("story")||msg.includes("how they met")||msg.includes("begin")) { reply="Let me take you to their beautiful story 🌸"; navigate('story'); }
+      else if(msg.includes("contact")||msg.includes("message")||msg.includes("email")) { reply="Want to leave us a message? Here's the contact page ✉️"; navigate('contact'); }
+      else if(msg.includes("timeline")||msg.includes("events")||msg.includes("dates")) { reply="Here's the timeline of Sean & Naomi's love story 🕒"; navigate('timeline'); }
+      else if(msg.includes("home")||msg.includes("welcome")||msg.includes("main page")) { reply="Back to the homepage 🏠"; navigate('home'); }
+      appendChatMessage(reply,'bot');
+    }
 
-    // Load home page on start
+    chatTextarea.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
+
+    // Load initial page
     navigate('home');
   </script>
-<!-- Chatbot Interface -->
-<div style="position:fixed; bottom:20px; right:20px; width:300px; background:white; border:1px solid #ccc; padding:10px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); z-index:999;">
-  <h3>SLN Bot 💬</h3>
-  <div id="messages" style="height:200px; overflow-y:auto; background:#f9f9f9; padding:10px; border-radius:6px; border:1px solid #eee;"></div>
-  <input id="userInput" type="text" placeholder="Ask me anything..." style="width:100%; padding:8px; margin-top:8px; box-sizing:border-box;" onkeydown="if(event.key==='Enter') sendMessage()">
-</div>
-<script>
-function sendMessage() {
-  const input = document.getElementById("userInput");
-  const message = input.value.trim();
-  if (!message) return;
-
-  const messages = document.getElementById("messages");
-  messages.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
-
-  const msg = message.toLowerCase();
-  let reply = "I'm just a simple bot. Ask me anything about Sean & Naomi 💞";
-
-  if (msg.includes("hello") || msg.includes("hi")) {
-    reply = "Hi there! ❤️ How can I help you?";
-  } else if (msg.includes("gallery") || msg.includes("photos") || msg.includes("pictures")) {
-    reply = "Sure! Here’s the gallery 📸";
-    showPage('gallery');
-  } else if (msg.includes("story") || msg.includes("how they met") || msg.includes("begin")) {
-    reply = "Let me take you to their beautiful story 🌸";
-    showPage('story');
-  } else if (msg.includes("contact") || msg.includes("message") || msg.includes("email")) {
-    reply = "Want to leave us a message? Here's the contact page ✉️";
-    showPage('contact');
-  } else if (msg.includes("timeline") || msg.includes("events") || msg.includes("dates")) {
-    reply = "Here's the timeline of Sean & Naomi's love story 🕒";
-    showPage('timeline');
-  } else if (msg.includes("home") || msg.includes("welcome") || msg.includes("main page")) {
-    reply = "Back to the homepage 🏠";
-    showPage('home');
-  } else if (msg.includes("wayne")) {
-    reply = "Wayne is Gay. 偉毛 草歪掉了";
-    showPage('home');
-  }
-function showPage(pageId) {
-  // Hide all pages
-  const pages = document.querySelectorAll('.page');
-  pages.forEach(page => page.style.display = 'none');
-
-  // Show the selected page
-  const selectedPage = document.getElementById(pageId);
-  if (selectedPage) {
-    selectedPage.style.display = 'block';
-  }
-}
-
-  messages.innerHTML += `<p><strong>SLN Bot:</strong> ${reply}</p>`;
-  input.value = "";
-  messages.scrollTop = messages.scrollHeight;
-}
-</script>
 
 </body>
 </html>
