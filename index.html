@@ -403,15 +403,122 @@
     }
 
     function handleBotReply(message){
-      const msg=message.toLowerCase();
-      let reply="I'm just a simple bot. Ask me anything about Alex & Jou-Ying 💞";
-      if(msg.includes("hello")||msg.includes("hi")) reply="Hi there! ❤️ How can I help you?";
-      else if(msg.includes("gallery")||msg.includes("photos")||msg.includes("pictures")) { reply="Sure! Here’s the gallery 📸"; navigate('gallery'); }
-      else if(msg.includes("story")||msg.includes("how they met")||msg.includes("begin")) { reply="Let me take you to their beautiful story 🌸"; navigate('story'); }
-      else if(msg.includes("contact")||msg.includes("message")||msg.includes("email")) { reply="Want to leave us a message? Here's the contact page ✉️"; navigate('contact'); }
-      else if(msg.includes("timeline")||msg.includes("events")||msg.includes("dates")) { reply="Here's the timeline of Alex and Jou-Ying's love story 🕒"; navigate('timeline'); }
-      else if(msg.includes("home")||msg.includes("welcome")||msg.includes("main page")) { reply="Back to the homepage 🏠"; navigate('home'); }
-      appendChatMessage(reply,'bot');
+      const msg = message.toLowerCase();
+      
+      // --------------------
+      // MEMORY (simple context)
+      // --------------------
+      if (!window.chatMemory) {
+        window.chatMemory = {
+          lastTopic: null,
+          mood: "neutral"
+        };
+      }
+      
+      let reply = "";
+      
+      // --------------------
+      // STEP 1: SCORING SYSTEM (instead of rigid if/else)
+      // --------------------
+      const intents = [
+        {
+          name: "identity",
+          score: (m) =>
+            (m.includes("who are you") ? 3 : 0) +
+            (m.includes("what are you") ? 3 : 0) +
+            (m.includes("what is this") ? 3 : 0),
+          reply: "I’m the ALJ Bot 💞 I help you explore Alex & Jou-Ying’s story."
+        },
+      
+        {
+          name: "alex_jou",
+          score: (m) =>
+            (m.includes("alex") ? 1 : 0) +
+            (m.includes("jou") ? 1 : 0) +
+            (m.includes("love") ? 1 : 0),
+          reply: "Alex & Jou-Ying’s story is shown through story, gallery, and timeline 💞"
+        },
+      
+        {
+          name: "hate_negative",
+          score: (m) =>
+            (m.includes("hate") ? 5 : 0) +
+            (m.includes("don’t like") ? 5 : 0) +
+            (m.includes("boring") ? 3 : 0),
+          reply: "That’s okay 💛 You don’t have to explore that part. Want to try something else?"
+        },
+      
+        {
+          name: "sad",
+          score: (m) =>
+            (m.includes("sad") ? 3 : 0) +
+            (m.includes("lonely") ? 3 : 0) +
+            (m.includes("tired") ? 2 : 0),
+          reply: "I’m here with you 💛 Maybe exploring their story will help a bit."
+        },
+      
+        {
+          name: "gallery",
+          score: (m) =>
+            (m.includes("gallery") ? 3 : 0) +
+            (m.includes("photo") ? 2 : 0) +
+            (m.includes("picture") ? 2 : 0),
+          reply: "Taking you to the gallery 📸",
+          action: () => navigate("gallery")
+        },
+      
+        {
+          name: "story",
+          score: (m) =>
+            (m.includes("story") ? 3 : 0) +
+            (m.includes("begin") ? 2 : 0),
+          reply: "Let’s explore their story 🌸",
+          action: () => navigate("story")
+        },
+      
+        {
+          name: "timeline",
+          score: (m) =>
+            (m.includes("timeline") ? 3 : 0) +
+            (m.includes("history") ? 2 : 0),
+          reply: "Here’s their timeline 🕒",
+          action: () => navigate("timeline")
+        }
+      ];
+      
+      // --------------------
+      // STEP 2: FIND BEST MATCH
+      // --------------------
+      let best = null;
+      let bestScore = 0;
+      
+      for (const intent of intents) {
+        const score = intent.score(msg);
+        if (score > bestScore) {
+          bestScore = score;
+          best = intent;
+        }
+      }
+      
+      // --------------------
+      // STEP 3: RESPONSE LOGIC
+      // --------------------
+      if (best && bestScore > 0) {
+        reply = best.reply;
+      
+        // memory update
+        window.chatMemory.lastTopic = best.name;
+      
+        // navigation action
+        if (best.action) best.action();
+      } else {
+        reply = "Hmm 🤔 I’m not fully sure. Try asking about Alex, Jou-Ying, story, gallery, or timeline 💞";
+      }
+      
+      // --------------------
+      // OUTPUT
+      // --------------------
+      appendChatMessage(reply, "bot");
     }
 
     chatTextarea.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
